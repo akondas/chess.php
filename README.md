@@ -20,14 +20,6 @@ or put in your composer.json
 	"ryanhs/chess.php": "^1.0"
 }
 ```
-  
-## Coding Style
-
-Use php-cs-fixer
-
-```
-composer fix-cs
-```
 
 ## Example Code
 The code below plays a complete game of chess ... randomly.
@@ -46,6 +38,20 @@ while (!$chess->gameOver()) {
 }
 
 echo $chess->ascii() . PHP_EOL;
+```
+
+```
+   +------------------------+
+ 8 | .  .  .  .  .  .  .  . |
+ 7 | .  .  .  .  r  .  .  . |
+ 6 | .  .  .  .  .  .  .  . |
+ 5 | .  .  .  .  .  .  .  . |
+ 4 | k  .  .  .  .  .  .  . |
+ 3 | .  .  .  .  .  .  K  . |
+ 2 | .  .  .  n  .  .  .  . |
+ 1 | .  .  .  .  .  .  .  . |
+   +------------------------+
+     a  b  c  d  e  f  g  h
 ```
 
 ## Chess.php documentation
