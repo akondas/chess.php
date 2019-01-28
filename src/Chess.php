@@ -139,13 +139,14 @@ class Chess
     protected $header;
     protected $generateMovesCache;
     protected $boardHash;
+    protected $sanMoveCache;
 
-    public function __construct($fen = null)
+    public function __construct(?string $fen = null)
     {
         $this->clear();
 
-        if (strlen(strval($fen)) > 0) {
-            $this->load(strval($fen));
+        if ((string) $fen !== '') {
+            $this->load($fen);
         } else {
             $this->reset();
         }
@@ -164,6 +165,7 @@ class Chess
         $this->history = [];
         $this->header = [];
         $this->generateMovesCache = [];
+        $this->sanMoveCache = [];
 
         for ($i = 0; $i < 120; ++$i) {
             $this->board[$i] = null;
@@ -1132,12 +1134,12 @@ class Chess
      * square coordinates to algebraic coordinates.  It also prunes an
      * unnecessary move keys resulting from a verbose call.
      */
-    public function moves($options = ['verbose' => false])
+    public function moves($options = ['verbose' => false]): array
     {
-        $moves = $this->generateMoves();
-        array_walk($moves, function (&$move) use ($options): void {
-            $move = !empty($options['verbose']) ? $this->makePretty($move) : $this->moveToSAN($move);
-        });
+        $moves = [];
+        foreach ($this->generateMoves() as $key => $move) {
+            $moves[$key] = $options['verbose'] ? $this->makePretty($move) : $this->moveToSAN($move);
+        }
 
         return $moves;
     }
@@ -1412,8 +1414,13 @@ class Chess
     }
 
     // convert a move from 0x88 to SAN
-    protected function moveToSAN($move)
+    protected function moveToSAN(array $move): string
     {
+        $cacheKey = json_encode($move).$this->boardHash;
+        if (isset($this->sanMoveCache[$cacheKey])) {
+            return $this->sanMoveCache[$cacheKey];
+        }
+
         $output = '';
         if ($move['flags'] & self::BITS['KSIDE_CASTLE']) {
             $output = 'O-O';
@@ -1452,7 +1459,7 @@ class Chess
         }
         $this->undoMove();
 
-        return $output;
+        return $this->sanMoveCache[$cacheKey] = $output;
     }
 
     protected function makePretty($uglyMove)
