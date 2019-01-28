@@ -56,6 +56,9 @@ echo $chess->ascii() . PHP_EOL;
 
 ## Performance
 
+There is still a lot to do in this topic.  
+[akondas/php-grandmaster](https://github.com/akondas/php-grandmaster) is a good place to start experiment ;)
+
 ### Chess::move()
 
 | iteration | mean  | comment |
