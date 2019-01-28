@@ -138,6 +138,7 @@ class Chess
     protected $history;
     protected $header;
     protected $generateMovesCache;
+    protected $boardHash;
 
     public function __construct($fen = null)
     {
@@ -153,6 +154,7 @@ class Chess
     public function clear(): void
     {
         $this->board = [];
+        $this->boardHash = json_encode($this->board);
         $this->kings = [self::WHITE => null, self::BLACK => null];
         $this->turn = self::WHITE;
         $this->castling = [self::WHITE => 0, 	self::BLACK => 0];
@@ -257,7 +259,7 @@ class Chess
         return $this->load(self::DEFAULT_POSITION);
     }
 
-    public function fen($onlyPosition = false)
+    public function fen()
     {
         $empty = 0;
         $fen = '';
@@ -305,11 +307,7 @@ class Chess
 
         $epFlags = $this->epSquare === null ? '-' : self::algebraic($this->epSquare);
 
-        if ($onlyPosition) {
-            return implode(' ', [$fen, $this->turn, $cFlags, $epFlags]);
-        } else {
-            return implode(' ', [$fen, $this->turn, $cFlags, $epFlags, $this->halfMoves, $this->moveNumber]);
-        }
+        return implode(' ', [$fen, $this->turn, $cFlags, $epFlags, $this->halfMoves, $this->moveNumber]);
     }
 
     // just an alias
@@ -551,6 +549,7 @@ class Chess
 
         $this->clear(); // clear first
         $this->board = $chess->board;
+        $this->boardHash = $chess->board;
         $this->kings = $chess->kings;
         $this->turn = $chess->turn;
         $this->castling = $chess->castling;
@@ -802,9 +801,8 @@ class Chess
         }
         $this->turn = $them;
 
-        //~ echo $historyKey . PHP_EOL;
-        // needed caching for short inThreefoldRepetition()
-        $this->history[$historyKey]['position'] = $this->fen(true);
+        $this->boardHash = json_encode($this->board);
+        $this->history[$historyKey]['position'] = $this->boardHash;
     }
 
     protected function push($move)
@@ -901,6 +899,8 @@ class Chess
             $this->board[$castlingFrom] = null;
         }
 
+        $this->boardHash = json_encode($this->board);
+
         return $move;
     }
 
@@ -913,7 +913,7 @@ class Chess
 
     protected function generateMoves($options = [])
     {
-        $cacheKey = $this->fen().json_encode($options);
+        $cacheKey = $this->boardHash.json_encode($options);
 
         // check cache first
         if (isset($this->generateMovesCache[$cacheKey])) {

@@ -14,13 +14,15 @@
         }
     ],
     "require": {
-        "php": "^7.2"
+        "php": "^7.2",
+        "ext-json": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
         "johnkary/phpunit-speedtrap": "^3.0",
         "phpstan/phpstan": "^0.11.1",
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^7.5",
+        "phpbench/phpbench": "^0.15.0"
     },
     "autoload": {
         "psr-4": {
@@ -29,7 +31,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Ryanhs\\Chess\\Test\\": "tests/"
+            "Ryanhs\\Chess\\Test\\": "tests/",
+            "Ryanhs\\Chess\\Benchmark\\": "benchmarks/"
         }
     },
     "minimum-stability": "stable",
@@ -42,6 +45,7 @@
         "check-cs": "./vendor/bin/php-cs-fixer fix --dry-run",
         "fix-cs": "./vendor/bin/php-cs-fixer fix",
         "phpstan": "./vendor/bin/phpstan analyze src tests --level 3 --configuration phpstan.neon",
-        "test": "./vendor/bin/phpunit"
+        "test": "./vendor/bin/phpunit",
+        "benchmark": "./vendor/bin/phpbench run benchmarks/ --report=aggregate --retry-threshold=2"
     }
 }

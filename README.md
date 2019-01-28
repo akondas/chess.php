@@ -54,6 +54,13 @@ echo $chess->ascii() . PHP_EOL;
      a  b  c  d  e  f  g  h
 ```
 
-## Chess.php documentation
+## Performance
 
-you can check it here: [https://ryanhs.github.io/chess.php](https://ryanhs.github.io/chess.php)
+### Chess::move()
+
+| iteration | mean  | comment |
+| :-------: | :---: | ------- |
+| 1 | 548.819μs | initial |
+| 2 | 447.973μs | replace fen with json_encode in history position (inThreefoldRepetition cache)
+| 3 | 340.375μs | replace fen with json_encode in generateMoves
+| 4 | 333.145μs | add boardHash calculation on make/undo move
