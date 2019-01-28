@@ -56,6 +56,9 @@ echo $chess->ascii() . PHP_EOL;
 
 ## Performance
 
+There is still a lot to do in this topic.  
+[akondas/php-grandmaster](https://github.com/akondas/php-grandmaster) is a good place to start experiment ;)
+
 ### Chess::move()
 
 | iteration | mean  | comment |
@@ -64,3 +67,4 @@ echo $chess->ascii() . PHP_EOL;
 | 2 | 447.973μs | replace fen with json_encode in history position (inThreefoldRepetition cache)
 | 3 | 340.375μs | replace fen with json_encode in generateMoves
 | 4 | 333.145μs | add boardHash calculation on make/undo move
+| 5 | 25.917μs | :fire: add cache for moveToSAN method 

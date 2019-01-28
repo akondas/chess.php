@@ -32,4 +32,13 @@ final class MoveBench
     {
         $this->chess->move('e4');
     }
+
+    /**
+     * @Revs(1000)
+     * @Iterations(5)
+     */
+    public function benchMoves(): void
+    {
+        $this->chess->moves();
+    }
 }
