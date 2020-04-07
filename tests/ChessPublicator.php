@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ryanhs\Chess\Test;
 
 use Ryanhs\Chess\Chess;
+use Ryanhs\Chess\Move;
 
 // a proxy for testing protected method
 class ChessPublicator extends Chess
@@ -49,12 +50,12 @@ class ChessPublicator extends Chess
         return $this->undoMove();
     }
     
-    public function moveToSANPublic($move)
+    public function moveToSANPublic(?Move $move): string
     {
         return $this->moveToSAN($move);
     }
     
-    public function moveFromSANPublic($san)
+    public function moveFromSANPublic($san): ?Move
     {
         return $this->moveFromSAN($san);
     }

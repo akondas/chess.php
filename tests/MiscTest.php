@@ -43,7 +43,7 @@ class MiscTest extends TestCase
         
         $this->assertSame(count($histories), count($moves));
         foreach ($histories as $k => $history) {
-            $this->assertSame($history['san'], $moves[$k]);
+            $this->assertSame($history->san, $moves[$k]);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Ryanhs\Chess\Test;
 
 use PHPUnit\Framework\TestCase;
 use Ryanhs\Chess\Chess;
+use Ryanhs\Chess\Piece;
 
 class PiecePlacementTest extends TestCase
 {
@@ -18,11 +19,11 @@ class PiecePlacementTest extends TestCase
         $this->assertSame($chess->get('e4'), null);
         $this->assertSame($chess->get('g8'), null);
         
-        $piece = ['type' => Chess::QUEEN, 'color' => Chess::WHITE];
+        $piece = new Piece(Piece::QUEEN, Piece::WHITE);
         $chess->put($piece, 'e4');
         $this->assertSame($chess->get('e4'), $piece);
         
-        $piece = ['type' => Chess::KING, 'color' => Chess::BLACK];
+        $piece = new Piece(Piece::KING, Piece::BLACK);
         $chess->put($piece, 'd3');
         $this->assertSame($chess->get('d3'), $piece);
         
